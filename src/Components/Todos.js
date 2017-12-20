@@ -4,6 +4,7 @@ import TodoItem from './TodoItem';
 
 
 class Todos extends Component {
+
     deleteTodo(id){
         this.props.onDelete(id);
     }
@@ -13,7 +14,8 @@ class Todos extends Component {
     render() {
         let todoItems;
         if(this.props.todos){
-            todoItems = this.props.todos.map(todo => {
+            console.log(this.props.todos);
+            todoItems = this.props.todos.map((todo, index) => {
                 return (
 
                     <TodoItem onDelete={this.deleteTodo.bind(this)} key={todo.id} todo={todo} onEdit={this.editTodo.bind(this)}/>

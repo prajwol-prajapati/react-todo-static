@@ -1,30 +1,36 @@
 import React, { Component } from 'react';
-import uuid from 'uuid';
 
 class AddTodo extends Component {
     constructor(){
         super();
         this.state = {
             newTodo:{},
-            editTodo: false
+            editTodo: false,
+            editName: ''
         }
+       
+        
+        this.handleChange = this.handleChange.bind(this);
     }
 
     static defaultProps = {
         completed: ['true', 'false']
     }
 
+    // makeEdit(){
+    //     if(this.props.editStatus){
+    //         this.setState({ editTodo: true });
+    //     }
+    // }
     handleSubmit(e){
-        if(this.refs.title.value === ''){
-            alert('Title is required');
+        if(this.refs.name.value === ''){
+            alert('name is required');
         }else {
             this.setState({newTodo:{
-                userId: 1,
-                id: uuid.v4(),
-                title: this.refs.title.value,
+                name: this.refs.name.value,
                 completed: this.refs.completed.value
             }}, function(){
-                // console.log(this.state);
+                console.log(this.state.newTodo);
                 this.props.addTodo(this.state.newTodo);
             });
 
@@ -32,15 +38,15 @@ class AddTodo extends Component {
         e.preventDefault();
     }
 
-    handleChange(e){
-        if(this.refs.title.value === ''){
-            alert('Title is required');
+    handleEdit(e){
+        if(this.refs.name.value === ''){
+            alert('name is required');
         }else {
             this.setState({newTodo:{
                 userId: 1,
                 id: this.props.currentTodo.id,
-                title: this.refs.title.value,
-                completed: this.refs.completed.value
+                name: this.refs.name.value,
+                completed: this.refs.completed.value,
             }}, function(){
                 // console.log(this.state);
                 this.props.editTodo(this.state.newTodo);
@@ -49,28 +55,31 @@ class AddTodo extends Component {
         }
         e.preventDefault();
     }
-    backButton(){
-        document.getElementById('todoTitle').value = "";
-        // document.getElementById('todoDesc').value = "";
-        document.getElementById('submitButton').style.display = 'block';
-        document.getElementById('backButton').style.display = 'none';
-        this.setState({
-          editTodo: false
-        });
-      }
+    handleChange(){
+        this.setState({editName: this.refs.name.value});
+        
+    }
+    
     render() {
         let completedOptions = this.props.completed.map(completed => {
             return <option key={completed} value={completed}>{completed}</option>
         });
         let submitOption = this.handleSubmit.bind(this);
-        let todoTitle = '';
+        let todoname = '';
         let completed = 'false';
         let editStatus = this.props.editStatus;
         if(editStatus){
-            console.log(this.props.currentTodo.title);
-            todoTitle = this.props.currentTodo.title;
+            
+            console.log(this.props.currentTodo.name);
+            if(this.state.editTodo){
+                this.setState({ 
+                    editName: this.props.currentTodo.name,
+                    editTodo: false
+                });
+            }
             completed = this.props.currentTodo.completed;
-            submitOption = this.handleChange.bind(this);
+            submitOption = this.handleEdit.bind(this);
+            
         }
 
         // let submitButton = <input type="submit" value="Add"/>;
@@ -82,13 +91,13 @@ class AddTodo extends Component {
                 <h3>Add Todo</h3>
                 <form onSubmit={submitOption}>
                     <div>
-                        <label>Title</label><br/>
-                        <input type="text" ref={"title"} value={todoTitle} id="todoTitle"/>
+                        <label>name</label><br/>
+                        <input type="text" ref={"name"}  id="todoname" value={this.state.editName} onChange = {this.handleChange}/>
                     </div>
 
                     <div>
                         <label>Completed</label><br/>
-                        <select ref="completed" value={completed}  id="todoCompleted">
+                        <select ref="completed"  id="todoCompleted" value={completed} >
                             {completedOptions}
 
                         </select>

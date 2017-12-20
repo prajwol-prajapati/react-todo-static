@@ -5,6 +5,7 @@ import uuid from 'uuid';
 import $ from 'jquery';
 import AddProject from './Components/AddProject';
 import AddTodo from './Components/AddTodo';
+import Search from './Components/Search';
 import './App.css';
 import axios from 'axios';
 
@@ -17,54 +18,23 @@ class App extends Component {
       editStatus: false,
       currentIndex: ''
     }
+
+    this.handleAddTodo = this.handleAddTodo.bind(this);
+    this.handleSearch = this.handleSearch.bind(this);
   }
 
   
   getTodos(){
-    // $.ajax({
-    //     url: 'https://jsonplaceholder.typicode.com/todos',
-    //     dataType: 'json',
-    //     cache: false,
-    //     success: function() {
-    //         this.setState({todos: data}, function(){
-    //             console.log(this.state);
-    //         });
-    //     }.bind(this),
-    //     error: function(xhr, status, err){
-    //         console.log(err);
-    //     }
-    //     }
-    // });
-
-    axios.get('api/users/1/todos');
-    var todos = [
-        {
-            userId: 1,
-            id: 1,
-            title: 'todo 1',
-            completed: false
-        },
-        {
-            userId: 1,
-            id: 2,
-            title: 'todo 2',
-            completed: false
-        },
-        {
-            userId: 1,
-            id: 3,
-            title: 'todo 3',
-            completed: false
-        },
-        {
-            userId: 1,
-            id: 4,
-            title: 'todo 4',
-            completed: true
-        },
-    ];
-
-      this.setState({todos: todos});
+    
+    axios.get('http://127.0.0.1:8848/api/todos')
+    .then(
+      (value) => {
+        
+        this.setState({
+          todos: value.data.data
+        });
+      }
+    );
   }
 
   // componentWillMount(){
@@ -79,6 +49,13 @@ class App extends Component {
     let todos = this.state.todos;
     todos.push(todo);
     this.setState({todos: todos});
+
+    axios.post('http://127.0.0.1:8848/api/todos', {
+      name: todo.name,
+      done: todo.completed
+    }).then(() =>{
+      this.getTodos();
+    });
   }
 
   handleEditTodo(id){
@@ -102,22 +79,45 @@ class App extends Component {
     currentTodo.title = todo.title;
     currentTodo.completed = todo.completed;
     
+    axios.put('http://127.0.0.1:8848/api/todos/' + id, {
+      name: todo.name,
+      done: todo.completed
+    }).then(() =>{
+      this.getTodos();
+    });
   }
 
   handleDeleteTodo(id){
       let todos = this.state.todos;
       let index = todos.findIndex(x => x.id === id);
       todos.splice(index, 1);
+      axios.delete('http://127.0.0.1:8848/api/todos/' + id).then(() =>{
+      this.getTodos();
+    });
       // this.setState({todos: todos});
   }
+    handleSearch(key) {
+            axios.get('http://127.0.0.1:8848/api/todos/search', {
+                params: {
+                    key: key
+                }
+            }).then((value) => {
+                console.log('value', value);
+                this.setState({
+                    todos: value.data.data
+                })
+            });
+                
+        }
 
   render() {
     return (
       <div className="App">
         {/*<AddProject addProject = {this.handleAddProject.bind(this)}/>*/}
         {/*<Projects projects = {this.state.projects} onDelete={this.handleDeleteProject.bind(this)}/>*/}
+        <Search search = {this.handleSearch} />
         <Todos todos = {this.state.todos} onDelete={this.handleDeleteTodo.bind(this)} onEdit={this.handleEditTodo.bind(this)}/>
-        <AddTodo addTodo = {this.handleAddTodo.bind(this)} editStatus = {this.state.editStatus} currentTodo = {this.state.todos[this.state.currentIndex]} editTodo = {this.handleSaveEditTodo.bind(this)}/>
+        <AddTodo addTodo = {this.handleAddTodo} editStatus = {this.state.editStatus} currentTodo = {this.state.todos[this.state.currentIndex]} editTodo = {this.handleSaveEditTodo.bind(this)}/>
       </div>
     );
   }

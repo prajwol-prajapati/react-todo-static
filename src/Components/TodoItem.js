@@ -12,7 +12,7 @@ class TodoItem extends Component {
     render() {
         return (
             <li className="Todo">
-                <strong>{this.props.todo.id}</strong>: {this.props.todo.title} 
+                <strong>{this.props.todo.id}</strong>: {this.props.todo.name} 
                 <a className="pull-right delete-button" href="#" onClick={this.deleteTodo.bind(this, this.props.todo.id )}>delete x</a>
                 <a className="pull-right edit-button" href="#" onClick={this.editTodo.bind(this, this.props.todo.id )}>edit</a>
             </li>

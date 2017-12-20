@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import uuid from 'uuid';
 
 class EditTodo extends Component {
     constructor(){
@@ -16,8 +15,7 @@ class EditTodo extends Component {
     handleSubmit(e){
        this.setState({newTodo:{
                 userId: 1,
-                id: ,
-                title: this.refs.title.value,
+                name: this.refs.name.value,
                 completed: this.refs.completed.value
             }}, function(){
                 // console.log(this.state);
@@ -36,8 +34,8 @@ class EditTodo extends Component {
                 <h3>Add Todo</h3>
                 <form onSubmit={this.handleSubmit.bind(this)}>
                     <div>
-                        <label>Title</label><br/>
-                        <input type="text" ref={"title"}/>
+                        <label>name</label><br/>
+                        <input type="text" ref={"name"}/>
                     </div>
 
                     <div>
