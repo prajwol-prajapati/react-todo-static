@@ -1,0 +1,48 @@
+.Todos{
+    border: 2px solid blue;
+    width: contain;
+
+}
+.Todos h3{
+    text-align: center;
+}
+
+.Todo{
+    width: 90%;
+    border: 2px solid green;
+    line-height: 40px;
+    background: greenyellow;
+    min-height: 40px;
+    padding: 0px 10px;
+    margin: 5px;
+    border-radius: 5px;
+}
+
+li{
+    list-style: none;
+}
+
+.pull-right{
+    float: right;
+}
+
+.pull-left{
+    float: left;
+}
+.delete-button{
+    background: tomato;
+    border-radius: 4px;
+    text-decoration: none;
+    line-height: 20px;
+    margin: 5px;
+    padding: 5px;
+}
+
+.edit-button{
+    background: royalblue;
+    border-radius: 4px;
+    text-decoration: none;
+    line-height: 20px;
+    margin: 5px;
+    padding: 5px;
+}
