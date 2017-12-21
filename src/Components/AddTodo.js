@@ -8,7 +8,8 @@ class AddTodo extends Component {
             editTodo: false,
             editName: ''
         }
-       
+       this.makeEdit = this.makeEdit.bind(this);
+       this.makeEdit;
         
         this.handleChange = this.handleChange.bind(this);
     }
@@ -17,11 +18,11 @@ class AddTodo extends Component {
         completed: ['true', 'false']
     }
 
-    // makeEdit(){
-    //     if(this.props.editStatus){
-    //         this.setState({ editTodo: true });
-    //     }
-    // }
+    makeEdit(){
+        if(this.props.editStatus){
+            this.setState({ editTodo: true });
+        }
+    }
     handleSubmit(e){
         if(this.refs.name.value === ''){
             alert('name is required');

@@ -7,7 +7,7 @@ import AddProject from './Components/AddProject';
 import AddTodo from './Components/AddTodo';
 import Search from './Components/Search';
 import './App.css';
-import axios from 'axios';
+import axiosService from './Services/axiosService';
 
 class App extends Component {
   constructor(){
@@ -26,7 +26,7 @@ class App extends Component {
   
   getTodos(){
     
-    axios.get('http://127.0.0.1:8848/api/todos')
+    axiosService.get('todos')
     .then(
       (value) => {
         
@@ -50,7 +50,7 @@ class App extends Component {
     todos.push(todo);
     this.setState({todos: todos});
 
-    axios.post('http://127.0.0.1:8848/api/todos', {
+    axiosService.post('todos', {
       name: todo.name,
       done: todo.completed
     }).then(() =>{
@@ -79,7 +79,7 @@ class App extends Component {
     currentTodo.title = todo.title;
     currentTodo.completed = todo.completed;
     
-    axios.put('http://127.0.0.1:8848/api/todos/' + id, {
+    axiosService.put('todos/' + id, {
       name: todo.name,
       done: todo.completed
     }).then(() =>{
@@ -91,13 +91,13 @@ class App extends Component {
       let todos = this.state.todos;
       let index = todos.findIndex(x => x.id === id);
       todos.splice(index, 1);
-      axios.delete('http://127.0.0.1:8848/api/todos/' + id).then(() =>{
+      axiosService.delete('todos/' + id).then(() =>{
       this.getTodos();
     });
       // this.setState({todos: todos});
   }
     handleSearch(key) {
-            axios.get('http://127.0.0.1:8848/api/todos/search', {
+            axiosService.get('todos/search', {
                 params: {
                     key: key
                 }
@@ -117,7 +117,7 @@ class App extends Component {
         {/*<Projects projects = {this.state.projects} onDelete={this.handleDeleteProject.bind(this)}/>*/}
         <Search search = {this.handleSearch} />
         <Todos todos = {this.state.todos} onDelete={this.handleDeleteTodo.bind(this)} onEdit={this.handleEditTodo.bind(this)}/>
-        <AddTodo addTodo = {this.handleAddTodo} editStatus = {this.state.editStatus} currentTodo = {this.state.todos[this.state.currentIndex]} editTodo = {this.handleSaveEditTodo.bind(this)}/>
+        <AddTodo addTodo = {this.handleAddTodo} editStatus = {this.state.editStatus} currentTodo = {this.state.todos[this.state.currentIndex]} editTodo = {this.handleSaveEditTodo.bind(this)} />
       </div>
     );
   }
