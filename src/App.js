@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
-import Projects from './Components/Projects';
 import Todos from './Components/Todos';
 import uuid from 'uuid';
 import $ from 'jquery';
-import AddProject from './Components/AddProject';
 import AddTodo from './Components/AddTodo';
 import Search from './Components/Search';
 import './App.css';
@@ -36,10 +34,6 @@ class App extends Component {
       }
     );
   }
-
-  // componentWillMount(){
-  //   this.getTodos();
-  // }
 
   componentDidMount(){
     this.getTodos();

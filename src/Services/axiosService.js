@@ -26,6 +26,7 @@ axiosService.interceptors.response.use(undefined, err => {
 
         return getRefreshToken()
         .then(data => {
+            console.log(data.data.accessToken);
             axiosService.defaults.headers['Authorization'] = data.data.accessToken;
             tempConfig.headers.Authorization = data.data.accessToken;
 
